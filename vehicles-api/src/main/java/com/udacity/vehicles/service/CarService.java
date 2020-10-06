@@ -2,6 +2,7 @@ package com.udacity.vehicles.service;
 
 import com.udacity.vehicles.client.maps.MapsClient;
 import com.udacity.vehicles.client.prices.PriceClient;
+import com.udacity.vehicles.domain.Location;
 import com.udacity.vehicles.domain.car.Car;
 import com.udacity.vehicles.domain.car.CarRepository;
 import org.modelmapper.ModelMapper;
@@ -51,7 +52,7 @@ public class CarService {
          *   If it does not exist, throw a CarNotFoundException
          *   Remove the below code as part of your implementation.
          */
-        Car car = new Car();
+        Car car = repository.findById(id).orElseThrow(CarNotFoundException::new);
 
         /**
          * TODO: Use the Pricing Web client you create in `VehiclesApiApplication`
@@ -61,6 +62,7 @@ public class CarService {
          *   the pricing service each time to get the price.
          */
 
+        car.setPrice(priceClient.getPrice(id));
 
         /**
          * TODO: Use the Maps Web client you create in `VehiclesApiApplication`
@@ -71,6 +73,9 @@ public class CarService {
          * meaning the Maps service needs to be called each time for the address.
          */
 
+        Location location = mapsClient.getAddress(car.getLocation());
+
+        car.setLocation(location);
 
         return car;
     }
