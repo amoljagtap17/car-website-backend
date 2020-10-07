@@ -27,7 +27,6 @@ import java.util.Collections;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -120,7 +119,6 @@ public class CarControllerTest {
             .perform(get("/cars/{id}", car.getId())
             .accept(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
-            .andDo(print())
             .andExpect(jsonPath("$.details.body").value(car.getDetails().getBody()));
     }
 
