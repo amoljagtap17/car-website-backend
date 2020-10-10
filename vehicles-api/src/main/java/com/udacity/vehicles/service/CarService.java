@@ -93,6 +93,7 @@ public class CarService {
      * @return the new/updated car is stored in the repository
      */
     public Car save(Car car) {
+
         if (car.getId() != null) {
             return repository.findById(car.getId())
                     .map(carToBeUpdated -> {
@@ -103,7 +104,12 @@ public class CarService {
                     }).orElseThrow(CarNotFoundException::new);
         }
 
-        return repository.save(car);
+        Car savedCar = repository.save(car);
+
+        savedCar.setPrice(priceClient.getPrice(savedCar.getId()));
+        savedCar.setLocation(mapsClient.getAddress(savedCar.getLocation()));
+
+        return savedCar;
     }
 
     /**
