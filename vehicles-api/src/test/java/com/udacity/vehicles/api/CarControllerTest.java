@@ -116,7 +116,7 @@ public class CarControllerTest {
         Car car = getCar();
 
         mvc
-            .perform(get("/cars/{id}", car.getId())
+            .perform(get(new URI("/cars/1"))
             .accept(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.details.body").value(car.getDetails().getBody()));
@@ -135,6 +135,7 @@ public class CarControllerTest {
          */
 
         Car car = getCar();
+        car.setId(1L);
 
         mvc
             .perform(delete("/cars/{id}", car.getId()))
